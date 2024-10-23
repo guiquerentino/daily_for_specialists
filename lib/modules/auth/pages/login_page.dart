@@ -13,7 +13,6 @@ import '../../../domain/models/user_dto.dart';
 import '../bloc/login_bloc.dart';
 
 class LoginPage extends StatefulWidget {
-
   const LoginPage({super.key});
 
   @override
@@ -138,7 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                                   const Spacer(),
                                   TextButton(
                                     onPressed: () {
-                                      Modular.to.navigate(RouteConstants.forgotPasswordPage);
+                                      Modular.to.navigate(
+                                          RouteConstants.forgotPasswordPage);
                                     },
                                     child: DailyText.text("Esqueceu a senha?")
                                         .body
@@ -155,17 +155,25 @@ class _LoginPageState extends State<LoginPage> {
                                     .neutral,
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-
                                     LoginDto request = LoginDto(
                                         email: _emailController.text,
                                         password: _passwordController.text);
 
-                                    UserDto? userDto = await _loginBloc.login(request);
+                                    print(request.email);
+                                    print(request.password);
 
-                                    if(userDto != null){
-                                      Modular.to.pushNamed(RouteConstants.homePage);
+                                    UserDto? userDto =
+                                        await _loginBloc.login(request);
+
+                                    if (userDto != null) {
+                                      if (userDto.hasOnboarding) {
+                                        Modular.to
+                                            .pushNamed(RouteConstants.homePage);
+                                      } else {
+                                        Modular.to.pushNamed(
+                                            RouteConstants.nameOnboardingPage, arguments: userDto.id);
+                                      }
                                     }
-
                                   }
                                 },
                               ),
@@ -183,7 +191,8 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             TextButton(
                                 onPressed: () {
-                                  Modular.to.navigate(RouteConstants.createAccountPage);
+                                  Modular.to.navigate(
+                                      RouteConstants.createAccountPage);
                                 },
                                 child:
                                     DailyText.text("Membro novo? Registre-se")

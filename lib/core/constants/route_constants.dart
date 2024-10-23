@@ -5,4 +5,7 @@ class RouteConstants{
   static final String passwordChangedPage = '/auth/password-changed';
   static final String createAccountPage = '/auth/create-account';
   static final String accountCreatedPage = '/auth/account-created';
+  static final String nameOnboardingPage = '/onboarding';
+  static final String genderOnboardingPage = '/onboarding/gender';
+  static final String ageOnboardingPage = '/onboarding/age';
 }

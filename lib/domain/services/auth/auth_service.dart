@@ -8,4 +8,5 @@ abstract interface class AuthService {
   Future<UserDto?> doLoginAndSaveUser(LoginDto request);
   Future<bool> changePassword(PasswordRecoverDto request);
   Future<bool> createAccount(CreateAccountDto request);
+
 }

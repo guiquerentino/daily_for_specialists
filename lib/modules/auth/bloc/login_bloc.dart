@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:daily_for_specialists/domain/models/create_account_dto.dart';
 import 'package:daily_for_specialists/domain/models/login_dto.dart';
 import 'package:daily_for_specialists/domain/models/password_recover_dto.dart';
@@ -54,7 +52,13 @@ final class LoginBloc extends Cubit<LoginState> {
         UserDto? userDto = await _authService.doLoginAndSaveUser(savedLoginDto);
 
         if (userDto != null && userDto.role == 1) {
-          emit(LoginSuccess());
+
+          if(userDto.hasOnboarding){
+            emit(LoginSuccess());
+          } else {
+            emit(LoginInitial());
+          }
+
         } else {
           emit(LoginError(
             message: "Falha ao fazer login automático.",

@@ -6,6 +6,8 @@ final class LoginProcessing extends LoginState {}
 
 final class LoginSuccess extends LoginState {}
 
+final class LoginSuccessAndOnboarding extends LoginState {}
+
 final class LoginError extends LoginState {
   final String message;
   final int status;

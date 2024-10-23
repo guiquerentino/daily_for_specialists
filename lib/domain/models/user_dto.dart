@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'patient_dto.dart';
 
 class UserDto {
   int id;
@@ -10,7 +11,7 @@ class UserDto {
   Uint8List? profilePhoto;
   int? gender;
   int? age;
-  List<int> patients; // Alterado para não ser null
+  List<PatientDto> patients;
 
   UserDto({
     required this.id,
@@ -21,7 +22,7 @@ class UserDto {
     this.profilePhoto,
     this.age,
     this.gender,
-    List<int>? patients,
+    List<PatientDto>? patients,
   }) : patients = patients ?? [];
 
   Map<String, dynamic> toJson() => {
@@ -30,11 +31,10 @@ class UserDto {
     'hasOnboarding': hasOnboarding,
     'email': email,
     'name': name,
-    'profilePhoto':
-    profilePhoto != null ? base64Encode(profilePhoto!) : null,
+    'profilePhoto': profilePhoto != null ? base64Encode(profilePhoto!) : null,
     'gender': gender.toString().split('.').last,
     'age': age,
-    'patients': patients,
+    'patients': patients.map((p) => p.toJson()).toList(),
   };
 
   static UserDto fromJson(Map<String, dynamic> json) => UserDto(
@@ -42,13 +42,13 @@ class UserDto {
     role: _getAccountRole(json['role']),
     hasOnboarding: json['hasOnboarding'],
     email: json['email'],
-    name: json['name'],
+    name: json['fullName'],
     profilePhoto: json['profilePhoto'] != null
         ? base64Decode(json['profilePhoto'])
         : null,
     gender: _getGenderFromString(json['gender']),
     age: json['age'],
-    patients: List<int>.from(json['patients'] ?? []),
+    patients: PatientDto.fromJsonList(json['patients'] ?? []),
   );
 
   static int _getAccountRole(String? type) {
@@ -74,4 +74,5 @@ class UserDto {
         return null;
     }
   }
+
 }
