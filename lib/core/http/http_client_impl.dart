@@ -25,7 +25,8 @@ class HttpClientImpl implements HttpClient{
     }
   }
 
-  Future<Response> post(String url, Map<String, dynamic> data) async {
+  @override
+  Future<Response> post(String url, Map<String, dynamic>? data) async {
     try {
       final response = await _dio.post(url, data: data);
       return response;

@@ -45,6 +45,9 @@ dependencies:
   numberpicker: ^2.1.2
   iconsax: ^0.0.8
   intl: ^0.19.0
+  fl_chart: ^0.69.0
+  graphic: ^2.5.0
+  flutter_staggered_animations: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -65,12 +68,46 @@ flutter:
 
   assets:
     - .env
+    - assets/loginbar.svg
+    - assets/logo.png
+    - assets/sucess.svg
+    - assets/raccon_logo.png
+    - assets/raccoon.svg
+    - assets/atencaoplena.mp3
+    - assets/vipassana.mp3
+    - assets/respiracaoserena.mp3
+    - assets/mentetranquila.mp3
+    - assets/pazinterior.mp3
+    - assets/profunda.mp3
+    - assets/progressivo.mp3
+    - assets/compaixao.mp3
+    - assets/stress.mp3
+    - assets/emoji_felicidade.png
+    - assets/emoji_tristeza.png
+    - assets/meta_concluida.png
+    - assets/registro_concluido.png
+    - assets/chat.png
+    - assets/emoji_normal.png
+    - assets/emoji_muito_feliz.png
+    - assets/emoji_bravo.png
     - assets/article_illustration.png
     - assets/article_illustration2.png
     - assets/article_illustration3.png
-    - assets/loginbar.svg
-    - assets/sucess.svg
-    - assets/logo.png
+    - assets/article_illustration4.png
+    - assets/article_illustration5.png
+    - assets/article_illustration6.png
+    - assets/m1.png
+    - assets/m2.png
+    - assets/m3.png
+    - assets/m4.png
+    - assets/m5.png
+    - assets/m6.png
+    - assets/m7.png
+    - assets/m8.png
+    - assets/m9.png
+    - assets/m10.png
+    - assets/may.png
+    - assets/emoji_not_found.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

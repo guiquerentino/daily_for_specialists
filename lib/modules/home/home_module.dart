@@ -4,6 +4,7 @@ import 'package:daily_for_specialists/modules/home/pages/home_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../articles/bloc/articles_bloc.dart';
+import 'bloc/home_bloc.dart';
 
 class HomeModule extends Module {
 
@@ -16,6 +17,7 @@ class HomeModule extends Module {
   @override
   void binds(Injector i) {
     i.addSingleton<ArticlesBloc>(ArticlesBloc.new);
+    i.addSingleton<HomeBloc>(HomeBloc.new);
   }
 
   @override

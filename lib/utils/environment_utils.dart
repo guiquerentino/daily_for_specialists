@@ -4,6 +4,7 @@ import '../domain/models/user_dto.dart';
 
 class EnvironmentUtils {
   static UserDto? loggedUser;
+  static DateTime? dataAtual;
 
   static get(String key){
     return dotenv.env[key];

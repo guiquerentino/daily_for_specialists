@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'emotion_dto.dart';
+
 class PatientDto {
   int id;
   String name;
@@ -8,6 +10,7 @@ class PatientDto {
   int gender;
   Uint8List? profilePhoto;
   int meditationExperience;
+  EmotionDto? lastEmotion;
 
   PatientDto(
       {required this.id,
@@ -15,6 +18,7 @@ class PatientDto {
       required this.age,
       required this.gender,
       required this.profilePhoto,
+      this.lastEmotion,
       required this.meditationExperience});
 
   Map<String, dynamic> toJson() => {
@@ -25,18 +29,23 @@ class PatientDto {
         'profilePhoto':
             profilePhoto != null ? base64Encode(profilePhoto!) : null,
         'meditationExperience': meditationExperience.toString().split('.').last,
+        'lastEmotion': lastEmotion
       };
 
   static PatientDto fromJson(Map<String, dynamic> json) => PatientDto(
       id: json['id'],
       name: json['name'],
       age: json['age'],
+      lastEmotion: json['lastEmotion'] != null
+          ? EmotionDto.fromJson(json['lastEmotion'])
+          : null,
       gender: _getGenderFromString(json['gender']),
       profilePhoto: json['profilePhoto'] != null
           ? base64Decode(json['profilePhoto'])
           : null,
-      meditationExperience:
-          _getMeditationExperienceFromString(json['meditationExperience']));
+      meditationExperience: _getMeditationExperienceFromString(json['meditationExperience'])
+  );
+
 
   static int _getGenderFromString(String? gender) {
     switch (gender) {

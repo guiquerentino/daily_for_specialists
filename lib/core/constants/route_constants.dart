@@ -1,11 +1,13 @@
 class RouteConstants{
-  static final String loginPage = '/auth/';
-  static final String homePage = '/home/';
-  static final String forgotPasswordPage = '/auth/forgot-password';
-  static final String passwordChangedPage = '/auth/password-changed';
-  static final String createAccountPage = '/auth/create-account';
-  static final String accountCreatedPage = '/auth/account-created';
-  static final String nameOnboardingPage = '/onboarding';
-  static final String genderOnboardingPage = '/onboarding/gender';
-  static final String ageOnboardingPage = '/onboarding/age';
+  static const String loginPage = '/auth/';
+  static const String homePage = '/home/';
+  static const String forgotPasswordPage = '/auth/forgot-password';
+  static const String passwordChangedPage = '/auth/password-changed';
+  static const String createAccountPage = '/auth/create-account';
+  static const String accountCreatedPage = '/auth/account-created';
+  static const String nameOnboardingPage = '/onboarding/';
+  static const String genderOnboardingPage = '/onboarding/gender';
+  static const String ageOnboardingPage = '/onboarding/age';
+  static const String healthPage = '/health/';
+  static const String patientProfilePage = '/profile/';
 }

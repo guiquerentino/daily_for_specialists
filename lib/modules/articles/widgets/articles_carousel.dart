@@ -123,6 +123,10 @@ class _ArticlesCarouselState extends State<ArticlesCarousel> {
         } else if (state is ArticlesLoaded) {
           final articles = state.articles;
 
+          if (articles.isEmpty) {
+            return Container();
+          }
+
           return SingleChildScrollView(
             child: Column(
               children: [

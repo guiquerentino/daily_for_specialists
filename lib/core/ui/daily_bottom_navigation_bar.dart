@@ -27,10 +27,9 @@ class _DailyBottomNavigationBarState extends State<DailyBottomNavigationBar> {
         Modular.to.navigate(RouteConstants.homePage);
         break;
       case 1:
-        //Modular.to.navigate('/health');
+        Modular.to.navigate(RouteConstants.healthPage);
         break;
       case 2:
-       // Modular.to.navigate('/emotions${EmotionsHistoryPage.ROUTE_NAME}');
         break;
       case 3:
        // Modular.to.navigate('/profile');
@@ -38,6 +37,28 @@ class _DailyBottomNavigationBarState extends State<DailyBottomNavigationBar> {
       default:
         break;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    super.didChangeDependencies();
+
+    String currentRoute = Modular.to.path;
+    setState(() {
+      if (currentRoute == RouteConstants.homePage) {
+        _selectedIndex = 0;
+      } else if (currentRoute == RouteConstants.healthPage) {
+        print('aaa');
+        _selectedIndex = 1;
+        // } else if (currentRoute == RouteConstants.chatPage) {
+        //   _selectedIndex = 2;
+        // } else if (currentRoute == RouteConstants.profilePage) {
+        //   _selectedIndex = 3;
+      }
+    });
+
   }
 
   @override

@@ -8,6 +8,8 @@ import 'package:daily_for_specialists/domain/repositories/onboarding/onboarding_
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'articles/articles_repository_impl.dart';
+import 'home/home_repository.dart';
+import 'home/home_repository_impl.dart';
 
 class RepositoryModule extends Module {
   @override
@@ -16,6 +18,7 @@ class RepositoryModule extends Module {
     i.add<AuthRepository>(AuthRepositoryImpl.new);
     i.add<OnboardingRepository>(OnboardingRepositoryImpl.new);
     i.add<ArticlesRepository>(ArticlesRepositoryImpl.new);
+    i.add<HomeRepository>(HomeRepositoryImpl.new);
     super.binds(i);
   }
 }

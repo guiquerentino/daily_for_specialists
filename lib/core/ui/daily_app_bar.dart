@@ -3,9 +3,9 @@ import 'daily_text.dart';
 
 class DailyAppBar extends StatefulWidget {
   final String title;
-  final ValueChanged<String> onSearchChanged; // Adicione um parâmetro de callback
+  final ValueChanged<String>? onSearchChanged; // Agora é opcional
 
-  const DailyAppBar({super.key, required this.title, required this.onSearchChanged});
+  const DailyAppBar({super.key, required this.title, this.onSearchChanged});
 
   @override
   State<DailyAppBar> createState() => _DailyHomeAppBarState();
@@ -19,7 +19,9 @@ class _DailyHomeAppBarState extends State<DailyAppBar> {
   void initState() {
     super.initState();
     _searchController.addListener(() {
-      widget.onSearchChanged(_searchController.text); // Chame o callback ao mudar o texto
+      if (widget.onSearchChanged != null) {
+        widget.onSearchChanged!(_searchController.text);
+      }
     });
   }
 
@@ -57,19 +59,21 @@ class _DailyHomeAppBarState extends State<DailyAppBar> {
               ),
             )
                 : DailyText.text(widget.title).header.medium.bold,
-            IconButton(
-              icon: Icon(_isSearching ? Icons.close : Icons.search, size: 36),
-              onPressed: () {
-                setState(() {
-                  if (_isSearching) {
-                    _isSearching = false;
-                    _searchController.clear();
-                  } else {
-                    _isSearching = true;
-                  }
-                });
-              },
-            ),
+
+            if (widget.onSearchChanged != null)
+              IconButton(
+                icon: Icon(_isSearching ? Icons.close : Icons.search, size: 36),
+                onPressed: () {
+                  setState(() {
+                    if (_isSearching) {
+                      _isSearching = false;
+                      _searchController.clear();
+                    } else {
+                      _isSearching = true;
+                    }
+                  });
+                },
+              ),
           ],
         ),
       ],
@@ -78,7 +82,7 @@ class _DailyHomeAppBarState extends State<DailyAppBar> {
 
   @override
   void dispose() {
-    _searchController.dispose(); // Libere o controlador
+    _searchController.dispose();
     super.dispose();
   }
 }

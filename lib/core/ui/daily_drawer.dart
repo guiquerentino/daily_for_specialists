@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../domain/models/user_dto.dart';
+import 'daily_colors.dart';
 import 'daily_text.dart';
 
 class DailyDrawer extends StatelessWidget {
@@ -44,7 +45,7 @@ class DailyDrawer extends StatelessWidget {
                             height: 50,
                             decoration: BoxDecoration(
                               color: user?.profilePhoto == null
-                                  ? const Color.fromRGBO(158, 181, 103, 1)
+                                  ? DailyColors.primaryColor
                                   : Colors.black,
                               shape: BoxShape.circle,
                             ),
@@ -174,7 +175,7 @@ class DailyDrawer extends StatelessWidget {
           Container(
             width: double.maxFinite,
             height: 84,
-            color: const Color.fromRGBO(158, 181, 103, 1),
+            color: DailyColors.primaryColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
