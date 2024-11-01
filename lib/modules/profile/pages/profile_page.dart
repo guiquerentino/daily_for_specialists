@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:daily_for_specialists/core/constants/route_constants.dart';
 import 'package:daily_for_specialists/core/ui/daily_colors.dart';
 import 'package:daily_for_specialists/core/ui/daily_emotion_register.dart';
@@ -98,8 +100,15 @@ class _ProfilePageState extends State<ProfilePage> {
                             PopupMenuButton<String>(
                               onSelected: (value) async {
                                 if(value == 'edit'){
-                                    final response = await http.patch(Uri.parse(
-                                        'http://10.0.2.2:8080/api/v1/patients?id=${widget.patient.id}'));
+
+                                  print(widget.patient.id);
+
+                                  final response = await http.patch(
+                                    Uri.parse('http://10.0.2.2:8080/api/v1/patients?id=${widget.patient.id}'),
+                                    headers: {
+                                      HttpHeaders.connectionHeader: 'keep-alive',
+                                    },
+                                  );
 
                                     if(response.statusCode == 200){
                                       ScaffoldMessenger.of(context).showSnackBar(
@@ -107,9 +116,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                           content: Text('Paciente desconectado com sucesso'),
                                         ),
                                       );
-
-                                      UserDto? user = EnvironmentUtils.getLoggedUser();
-                                      user!.patients.remove(widget.patient);
 
                                       Modular.to.navigate(RouteConstants.homePage);
 

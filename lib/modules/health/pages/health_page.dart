@@ -29,6 +29,7 @@ class _HealthPageState extends State<HealthPage> {
   final controllers = List.generate(6, (_) => TextEditingController());
   final focusNodes = List.generate(6, (_) => FocusNode());
   late final HealthBloc _healthBloc;
+
   @override
   void dispose() {
     for (var controller in controllers) {
@@ -461,9 +462,6 @@ class _HealthPageState extends State<HealthPage> {
                                 return const Center(
                                     child: CircularProgressIndicator());
                               } else if (state is HealthLoaded) {
-                                UserDto? user = EnvironmentUtils.getLoggedUser();
-                                user!.patients.add(state.patient);
-
                                 return const SizedBox(
                                   width: double.maxFinite,
                                   height: 60,

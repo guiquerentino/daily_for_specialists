@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:daily_for_specialists/core/constants/route_constants.dart';
 import 'package:daily_for_specialists/core/ui/daily_app_bar.dart';
 import 'package:daily_for_specialists/core/ui/daily_bottom_navigation_bar.dart';
@@ -17,6 +19,7 @@ import '../../../domain/models/emotion_count_dto.dart';
 import '../../../domain/models/emotion_dto.dart';
 import '../../../domain/models/patient_dto.dart';
 import '../../../domain/models/user_dto.dart';
+import '../../auth/bloc/login_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,20 +30,34 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   UserDto? user = EnvironmentUtils.getLoggedUser();
-
+  Timer? _timer;
+  bool _isSearching = false;
   List<PatientDto> _filteredPatients = [];
   bool _isSortingRecent = true;
   late final HomeBloc _homeBloc;
+  late final LoginBloc _loginBloc;
+  bool showVisaoGeral = true;
+  bool showProximasSessoes = true;
 
   String _selectedFilter = "diária";
 
   @override
   void initState() {
     _homeBloc = Modular.get<HomeBloc>();
+    _loginBloc = Modular.get<LoginBloc>();
     super.initState();
     EnvironmentUtils.dataAtual = DateTime.now();
-    _homeBloc.loadChartsInfo(user!.id);
     _filteredPatients = user?.patients ?? [];
+    _homeBloc.loadChartsInfo(user!.id);
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      if (!_isSearching) {
+        _loginBloc.checkSavedLogin();
+        setState(() {
+          user = EnvironmentUtils.getLoggedUser();
+          _filteredPatients = user?.patients ?? [];
+        });
+      }
+    });
   }
 
   void _onSearchChanged(String query) {
@@ -228,152 +245,199 @@ class _HomePageState extends State<HomePage> {
                       ),
               ),
               const Gap(10),
-              const Padding(
-                padding: EdgeInsets.only(left: 16.0, right: 8, top: 8),
-                child: Text("Visão Geral de Pacientes",
-                    style:
-                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                    onPressed: () => _onFilterSelected("diária"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectedFilter == "diária"
-                          ? DailyColors.primaryColor
-                          : Colors.grey[200],
-                    ),
-                    child: Text(
-                      "Diário",
-                      style: TextStyle(
-                        color: _selectedFilter == "diária"
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16.0, right: 8, top: 8),
+                    child: Text("Visão Geral de Pacientes",
+                        style:
+                            TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                   ),
-                  ElevatedButton(
-                    onPressed: () => _onFilterSelected("semanal"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectedFilter == "semanal"
-                          ? DailyColors.primaryColor
-                          : Colors.grey[200],
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showVisaoGeral = !showVisaoGeral;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 8, top: 8),
+                      child: showVisaoGeral ? const Icon(Icons.keyboard_arrow_down) : const Icon(Icons.keyboard_arrow_up),
                     ),
-                    child: Text(
-                      "Semanal",
-                      style: TextStyle(
-                        color: _selectedFilter == "semanal"
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _onFilterSelected("mensal"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectedFilter == "mensal"
-                          ? DailyColors.primaryColor
-                          : Colors.grey[200],
-                    ),
-                    child: Text(
-                      "Mensal",
-                      style: TextStyle(
-                        color: _selectedFilter == "mensal"
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _onFilterSelected("anual"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _selectedFilter == "anual"
-                          ? DailyColors.primaryColor
-                          : Colors.grey[200],
-                    ),
-                    child: Text(
-                      "Anual",
-                      style: TextStyle(
-                        color: _selectedFilter == "anual"
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    ),
-                  ),
+                  )
                 ],
               ),
-              const Gap(10),
-              BlocBuilder<HomeBloc, HomeState>(
-                bloc: _homeBloc,
-                builder: (context, state) {
-                  if (state is HomeLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (state is HomeLoaded) {
-                    List<EmotionCountDto> emotionCounts = state.emotionCount;
-                    EmotionCountDto filteredEmotionCount =
-                        emotionCounts.firstWhere(
-                      (count) => count.ocorrencia.toString() == _selectedFilter,
-                      orElse: () => emotionCounts.first,
-                    );
-
-                    return SizedBox(
-                      height: 300,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Chart(
-                          data: [
-                            {
-                              'humor': 'Bravo',
-                              'ocorrencia': filteredEmotionCount.bravo
-                            },
-                            {
-                              'humor': 'Triste',
-                              'ocorrencia': filteredEmotionCount.triste
-                            },
-                            {
-                              'humor': 'Normal',
-                              'ocorrencia': filteredEmotionCount.normal
-                            },
-                            {
-                              'humor': 'Feliz',
-                              'ocorrencia': filteredEmotionCount.feliz
-                            },
-                            {
-                              'humor': 'Muito Feliz',
-                              'ocorrencia': filteredEmotionCount.muitoFeliz
-                            },
-                          ],
-                          variables: {
-                            'humor': Variable(
-                              accessor: (Map map) => map['humor'] as String,
-                            ),
-                            'ocorrencia': Variable(
-                              accessor: (Map map) => map['ocorrencia'] as num,
-                            ),
-                          },
-                          marks: [
-                            IntervalMark(
-                                color: ColorEncode(encoder: (Tuple tuple) {
-                              return DailyColors.primaryColor;
-                            }), label: LabelEncode(encoder: (Tuple tuple) {
-                              return Label(tuple['ocorrencia'].toString());
-                            }))
-                          ],
-                          axes: [
-                            Defaults.horizontalAxis,
-                          ],
+              if(showVisaoGeral) ... [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => _onFilterSelected("diária"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _selectedFilter == "diária"
+                            ? DailyColors.primaryColor
+                            : Colors.grey[200],
+                      ),
+                      child: Text(
+                        "Diário",
+                        style: TextStyle(
+                          color: _selectedFilter == "diária"
+                              ? Colors.white
+                              : Colors.black,
                         ),
                       ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _onFilterSelected("semanal"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _selectedFilter == "semanal"
+                            ? DailyColors.primaryColor
+                            : Colors.grey[200],
+                      ),
+                      child: Text(
+                        "Semanal",
+                        style: TextStyle(
+                          color: _selectedFilter == "semanal"
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _onFilterSelected("mensal"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _selectedFilter == "mensal"
+                            ? DailyColors.primaryColor
+                            : Colors.grey[200],
+                      ),
+                      child: Text(
+                        "Mensal",
+                        style: TextStyle(
+                          color: _selectedFilter == "mensal"
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _onFilterSelected("anual"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _selectedFilter == "anual"
+                            ? DailyColors.primaryColor
+                            : Colors.grey[200],
+                      ),
+                      child: Text(
+                        "Anual",
+                        style: TextStyle(
+                          color: _selectedFilter == "anual"
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(10),
+                BlocBuilder<HomeBloc, HomeState>(
+                  bloc: _homeBloc,
+                  builder: (context, state) {
+                    if (state is HomeLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (state is HomeLoaded) {
+                      List<EmotionCountDto> emotionCounts = state.emotionCount;
+                      EmotionCountDto filteredEmotionCount =
+                      emotionCounts.firstWhere(
+                            (count) => count.ocorrencia.toString() == _selectedFilter,
+                        orElse: () => emotionCounts.first,
+                      );
+
+                      return SizedBox(
+                        height: 300,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: Chart(
+                            data: [
+                              {
+                                'humor': 'Bravo',
+                                'ocorrencia': filteredEmotionCount.bravo
+                              },
+                              {
+                                'humor': 'Triste',
+                                'ocorrencia': filteredEmotionCount.triste
+                              },
+                              {
+                                'humor': 'Normal',
+                                'ocorrencia': filteredEmotionCount.normal
+                              },
+                              {
+                                'humor': 'Feliz',
+                                'ocorrencia': filteredEmotionCount.feliz
+                              },
+                              {
+                                'humor': 'Muito Feliz',
+                                'ocorrencia': filteredEmotionCount.muitoFeliz
+                              },
+                            ],
+                            variables: {
+                              'humor': Variable(
+                                accessor: (Map map) => map['humor'] as String,
+                              ),
+                              'ocorrencia': Variable(
+                                accessor: (Map map) => map['ocorrencia'] as num,
+                              ),
+                            },
+                            marks: [
+                              IntervalMark(
+                                  color: ColorEncode(encoder: (Tuple tuple) {
+                                    return DailyColors.primaryColor;
+                                  }), label: LabelEncode(encoder: (Tuple tuple) {
+                                return Label(tuple['ocorrencia'].toString());
+                              }))
+                            ],
+                            axes: [
+                              Defaults.horizontalAxis,
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: Text("Erro ao carregar dados"),
                     );
-                  }
-                  return const Center(
-                    child: Text("Erro ao carregar dados"),
-                  );
-                },
-              ),
+                  },
+                ),
+              ],
               const Gap(10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16.0, right: 8, top: 8),
+                    child: Text("Próximas Sessões Marcadas",
+                        style:
+                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        showProximasSessoes = !showProximasSessoes;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 8, top: 8),
+                      child: showProximasSessoes ? const Icon(Icons.keyboard_arrow_down) : const Icon(Icons.keyboard_arrow_up),
+                    ),
+                  ),
+
+                ],
+              ),
+              if(showProximasSessoes) ... [
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text("TODO"),
+                )
+              ]
             ],
           ),
         ),

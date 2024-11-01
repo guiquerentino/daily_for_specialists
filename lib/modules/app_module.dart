@@ -1,6 +1,7 @@
 import 'package:daily_for_specialists/domain/repositories/repository_module.dart';
 import 'package:daily_for_specialists/domain/services/service_module.dart';
 import 'package:daily_for_specialists/modules/auth/auth_module.dart';
+import 'package:daily_for_specialists/modules/chat/chat_module.dart';
 import 'package:daily_for_specialists/modules/health/health_module.dart';
 import 'package:daily_for_specialists/modules/home/home_module.dart';
 import 'package:daily_for_specialists/modules/onboarding/onboarding_module.dart';
@@ -27,6 +28,7 @@ class AppModule extends Module {
     r.module('/home', module: HomeModule());
     r.module('/onboarding', module: OnboardingModule());
     r.module('/health', module: HealthModule());
+    r.module('/chat', module: ChatModule());
     r.module('/profile', module: ProfileModule());
   }
 

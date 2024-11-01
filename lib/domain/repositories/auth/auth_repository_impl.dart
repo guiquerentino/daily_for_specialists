@@ -29,9 +29,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<bool> changePassword(PasswordRecoverDto request) async {
+
     Response response =
         await _httpClient.put(recoverPasswordPath, request.toJson());
-
     if (response.statusCode != 200) {
       return false;
     }

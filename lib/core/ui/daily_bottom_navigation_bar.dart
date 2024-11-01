@@ -30,6 +30,7 @@ class _DailyBottomNavigationBarState extends State<DailyBottomNavigationBar> {
         Modular.to.navigate(RouteConstants.healthPage);
         break;
       case 2:
+        Modular.to.navigate(RouteConstants.chatPage);
         break;
       case 3:
        // Modular.to.navigate('/profile');
@@ -50,10 +51,9 @@ class _DailyBottomNavigationBarState extends State<DailyBottomNavigationBar> {
       if (currentRoute == RouteConstants.homePage) {
         _selectedIndex = 0;
       } else if (currentRoute == RouteConstants.healthPage) {
-        print('aaa');
         _selectedIndex = 1;
-        // } else if (currentRoute == RouteConstants.chatPage) {
-        //   _selectedIndex = 2;
+        } else if (currentRoute == RouteConstants.chatPage) {
+          _selectedIndex = 2;
         // } else if (currentRoute == RouteConstants.profilePage) {
         //   _selectedIndex = 3;
       }

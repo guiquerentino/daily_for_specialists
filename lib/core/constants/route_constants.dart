@@ -10,4 +10,6 @@ class RouteConstants{
   static const String ageOnboardingPage = '/onboarding/age';
   static const String healthPage = '/health/';
   static const String patientProfilePage = '/profile/';
+  static const String chatPage = '/chat/';
+  static const String chatDetailsPage = '/chat/messages';
 }
