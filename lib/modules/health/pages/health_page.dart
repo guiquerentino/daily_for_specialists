@@ -186,7 +186,6 @@ class _HealthPageState extends State<HealthPage> {
                     children: [
                       Image.asset('assets/article_illustration5.png',
                           height: 70, width: 70),
-                      const Text("Anotações")
                     ],
                   ),
                 ),
@@ -374,7 +373,6 @@ class _HealthPageState extends State<HealthPage> {
                     children: [
                       Image.asset('assets/article_illustration6.png',
                           height: 70, width: 70),
-                      const Text("Testes")
                     ],
                   ),
                 ),

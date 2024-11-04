@@ -33,7 +33,7 @@ class _DailyBottomNavigationBarState extends State<DailyBottomNavigationBar> {
         Modular.to.navigate(RouteConstants.chatPage);
         break;
       case 3:
-       // Modular.to.navigate('/profile');
+        Modular.to.navigate(RouteConstants.profileSettingsPage);
         break;
       default:
         break;

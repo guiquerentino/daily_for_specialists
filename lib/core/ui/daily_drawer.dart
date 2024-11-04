@@ -87,8 +87,7 @@ class DailyDrawer extends StatelessWidget {
                     size: 18,
                   ),
                   onTap: () {
-                    // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 1;
-                    // Modular.to.navigate('/health');
+                     Modular.to.navigate(RouteConstants.healthPage);
                   },
                 ),
                 ListTile(
@@ -99,8 +98,7 @@ class DailyDrawer extends StatelessWidget {
                     size: 18,
                   ),
                   onTap: () {
-                    // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 2;
-                    // Modular.to.navigate('/emotions/history');
+                     Modular.to.navigate(RouteConstants.chatPage);
                   },
                 ),
                 const Divider(),

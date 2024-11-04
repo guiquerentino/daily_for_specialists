@@ -6,6 +6,7 @@ import 'package:daily_for_specialists/modules/health/health_module.dart';
 import 'package:daily_for_specialists/modules/home/home_module.dart';
 import 'package:daily_for_specialists/modules/onboarding/onboarding_module.dart';
 import 'package:daily_for_specialists/modules/profile/profile_module.dart';
+import 'package:daily_for_specialists/modules/settings/settings_module.dart';
 import 'package:daily_for_specialists/modules/splash/splash_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -30,6 +31,7 @@ class AppModule extends Module {
     r.module('/health', module: HealthModule());
     r.module('/chat', module: ChatModule());
     r.module('/profile', module: ProfileModule());
+    r.module('/settings', module: SettingsModule());
   }
 
 }
