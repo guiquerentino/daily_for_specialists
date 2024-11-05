@@ -24,14 +24,16 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<ChatDTO> chats = [];
-  Timer? _timer;
   bool _isSearching = false;
+  bool _isLoading = true;
+  Timer? _timer;
 
   String _decodeUtf8(String text) {
     return utf8.decode(text.codeUnits);
   }
 
   Future<void> fetchChats() async {
+
     UserDto? user = EnvironmentUtils.getLoggedUser();
     int id = user!.id;
     final response = await http.get(
@@ -42,21 +44,49 @@ class _ChatPageState extends State<ChatPage> {
       },
     );
 
-    List<ChatDTO> dto = ChatDTO.fromJsonList(jsonDecode(response.body));
-
     setState(() {
-      chats = dto;
+      _isLoading = false; 
     });
+
+    if (response.statusCode == 200) {
+      List<ChatDTO> dto = ChatDTO.fromJsonList(jsonDecode(response.body));
+
+      if (!areChatsEqual(dto, chats)) {
+        setState(() {
+          chats = dto;
+        });
+      }
+    } else {
+    }
+  }
+
+  bool areChatsEqual(List<ChatDTO> list1, List<ChatDTO> list2) {
+    if (list1.length != list2.length) {
+      return false;
+    }
+
+    bool isEqual = true;
+
+    for (int i = 0; i < list1.length; i++) {
+      final chat1 = list1[i];
+      final chat2 = list2[i];
+
+      if (chat1.id != chat2.id ||
+          chat1.lastMessage != chat2.lastMessage ||
+          chat1.lastMessageTime != chat2.lastMessageTime ||
+          chat1.patient!.name != chat2.patient!.name) {
+        isEqual = false;
+      }
+    }
+
+    return isEqual;
   }
 
   @override
   void initState() {
     super.initState();
-    fetchChats();
-    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
-      if (!_isSearching) {
-        fetchChats();
-      }
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      fetchChats();
     });
   }
 
@@ -88,10 +118,11 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: DailyAppBar(
-                  title: "Chat", onSearchChanged: _onSearchChanged),
+              child: DailyAppBar(title: "Chat", onSearchChanged: _onSearchChanged),
             ),
-            chats.isEmpty
+            _isLoading
+                ? Center(child: CircularProgressIndicator()) // Exibe um carregando enquanto os chats são buscados
+                : chats.isEmpty
                 ? Column(
               children: [
                 const Gap(100),
@@ -108,7 +139,10 @@ class _ChatPageState extends State<ChatPage> {
               children: chats.map((chat) {
                 return GestureDetector(
                   onTap: () {
-                    Modular.to.navigate("${RouteConstants.chatDetailsPage}?patientName=${chat.patient!.name}", arguments: chat.id, );
+                    Modular.to.navigate(
+                      "${RouteConstants.chatDetailsPage}?patientName=${chat.patient!.name}",
+                      arguments: chat.id,
+                    );
                   },
                   child: Container(
                     width: double.maxFinite,
@@ -186,7 +220,6 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancela o timer ao dispensar o estado
     super.dispose();
   }
 }

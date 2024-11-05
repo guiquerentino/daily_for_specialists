@@ -31,6 +31,25 @@ class ChatDTO {
     };
   }
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ChatDTO) return false;
+
+    return id == other.id &&
+        lastMessage == other.lastMessage &&
+        lastMessageTime == other.lastMessageTime &&
+        patient == other.patient;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+    lastMessage.hashCode ^
+    lastMessageTime.hashCode ^
+    patient.hashCode;
+  }
+
   static List<ChatDTO> fromJsonList(List<dynamic> jsonList) {
     return jsonList.map((json) => ChatDTO.fromJson(json)).toList();
   }

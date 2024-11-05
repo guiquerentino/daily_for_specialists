@@ -13,4 +13,8 @@ class RouteConstants{
   static const String chatPage = '/chat/';
   static const String chatDetailsPage = '/chat/messages';
   static const String profileSettingsPage = '/settings/';
+  static const String articlesPage = '/articles/';
+  static const String preferencesPage = '/settings/preferences';
+  static const String registersPage = '/registers/';
+  static const String goalsPage = '/goals/';
 }

@@ -50,7 +50,7 @@ class DailyDrawer extends StatelessWidget {
                               shape: BoxShape.circle,
                             ),
                             child: user?.profilePhoto != null
-                                ? Image.memory(user!.profilePhoto!)
+                                ? ClipOval(child: Image.memory(user!.profilePhoto!, fit: BoxFit.cover))
                                 : const Center(
                               child: Icon(
                                 Icons.person,
@@ -110,8 +110,7 @@ class DailyDrawer extends StatelessWidget {
                     size: 18,
                   ),
                   onTap: () {
-                    // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 0;
-                    // Modular.to.navigate('/annotations');
+                    Modular.to.pushNamed(RouteConstants.registersPage);
                   },
                 ),
                 ListTile(
@@ -122,8 +121,7 @@ class DailyDrawer extends StatelessWidget {
                     size: 18,
                   ),
                   onTap: () {
-                    // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 0;
-                    // Modular.to.navigate('/goals');
+                     Modular.to.pushNamed(RouteConstants.goalsPage);
                   },
                 ),
                 const Divider(),
@@ -135,8 +133,7 @@ class DailyDrawer extends StatelessWidget {
                     size: 18,
                   ),
                   onTap: () {
-                    // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 0;
-                    // Modular.to.navigate('/articles');
+                     Modular.to.navigate(RouteConstants.articlesPage);
                   },
                 ),
                 const Divider(),
@@ -148,7 +145,7 @@ class DailyDrawer extends StatelessWidget {
                     size: 18,
                   ),
                   onTap: () {
-                    Modular.to.navigate('/profile/settings');
+                    Modular.to.pushNamed(RouteConstants.preferencesPage);
                   },
                 ),
               ],

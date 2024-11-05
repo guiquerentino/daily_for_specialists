@@ -111,13 +111,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                   );
 
                                     if(response.statusCode == 200){
+                                      UserDto? user = EnvironmentUtils.getLoggedUser();
+                                      user!.patients.remove(widget.patient);
+                                      EnvironmentUtils.loggedUser = user;
+
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
                                           content: Text('Paciente desconectado com sucesso'),
                                         ),
                                       );
 
-                                      Modular.to.navigate(RouteConstants.homePage);
+                                      Modular.to.pushNamed(RouteConstants.homePage);
 
                                     } else {
                                       ScaffoldMessenger.of(context).showSnackBar(

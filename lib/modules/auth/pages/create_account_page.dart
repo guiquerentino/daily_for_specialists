@@ -132,6 +132,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                               if (value == null || value == '') {
                                 return 'Por favor, digite uma senha válida.';
                               }
+
+                              if(value != _passwordController.text){
+                                return 'As senhas não coincidem';
+                              }
+
                               return null;
                             },
                             decoration: InputDecoration(

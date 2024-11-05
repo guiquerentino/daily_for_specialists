@@ -11,6 +11,7 @@ class PatientDto {
   Uint8List? profilePhoto;
   int meditationExperience;
   EmotionDto? lastEmotion;
+  int? userId;
 
   PatientDto(
       {required this.id,
@@ -19,6 +20,7 @@ class PatientDto {
       required this.gender,
       required this.profilePhoto,
       this.lastEmotion,
+      this.userId,
       required this.meditationExperience});
 
   Map<String, dynamic> toJson() => {
@@ -29,13 +31,15 @@ class PatientDto {
         'profilePhoto':
             profilePhoto != null ? base64Encode(profilePhoto!) : null,
         'meditationExperience': meditationExperience.toString().split('.').last,
-        'lastEmotion': lastEmotion
+        'lastEmotion': lastEmotion,
+        'userId': userId
       };
 
   static PatientDto fromJson(Map<String, dynamic> json) => PatientDto(
       id: json['id'],
       name: json['name'],
       age: json['age'],
+      userId: json['userId'],
       lastEmotion: json['lastEmotion'] != null
           ? EmotionDto.fromJson(json['lastEmotion'])
           : null,
@@ -43,9 +47,8 @@ class PatientDto {
       profilePhoto: json['profilePhoto'] != null
           ? base64Decode(json['profilePhoto'])
           : null,
-      meditationExperience: _getMeditationExperienceFromString(json['meditationExperience'])
-  );
-
+      meditationExperience:
+          _getMeditationExperienceFromString(json['meditationExperience']));
 
   static int _getGenderFromString(String? gender) {
     switch (gender) {
@@ -78,4 +81,15 @@ class PatientDto {
   static List<PatientDto> fromJsonList(List<dynamic> jsonList) {
     return jsonList.map((json) => PatientDto.fromJson(json)).toList();
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PatientDto) return false;
+
+    return name == other.name && profilePhoto == other.profilePhoto;
+  }
+
+  @override
+  int get hashCode => name.hashCode ^ profilePhoto.hashCode;
 }

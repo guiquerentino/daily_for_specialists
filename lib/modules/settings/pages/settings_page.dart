@@ -25,6 +25,8 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController? _nameController;
   TextEditingController? _emailController;
   int? _selectedGender;
+  bool sucessfullChange = false;
+  bool failedChange = false;
   bool showSaveButton = false;
   String? _originalName;
   String? _originalEmail;
@@ -40,17 +42,21 @@ class _SettingsPageState extends State<SettingsPage> {
       EnvironmentUtils.loggedUser = user;
 
       String base64Image = base64Encode(imageBytes);
-
       final response = await http.put(
         Uri.parse('http://10.0.2.2:8080/api/v1/user/profile-photo?userId=${user.id}'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
         body: jsonEncode(<String, dynamic>{
-          'profilePhoto': base64Image,
+          'image': base64Image,
         }),
       );
       if (response.statusCode == 200) {
+
+        user.profilePhoto = imageBytes;
+
+        EnvironmentUtils.loggedUser = user;
+
         setState(() {
           showSaveButton = false;
         });
@@ -64,7 +70,7 @@ class _SettingsPageState extends State<SettingsPage> {
     ChangeAccountDto request = new ChangeAccountDto(userId: userId, fullName: fullName, email: email, gender: gender);
 
     final response = await http.put(
-        Uri.parse('http://10.0.2.2:8080/api/v1/user/update-profile?userId=' + user!.id.toString()),
+        Uri.parse('http://10.0.2.2:8080/api/v1/user/update-profile?userId=${user!.id}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -76,7 +82,16 @@ class _SettingsPageState extends State<SettingsPage> {
       user.name = fullName;
       user.gender = gender;
       EnvironmentUtils.loggedUser = user;
+      setState(() {
+        sucessfullChange = true;
+      });
+
+      return;
     }
+
+    setState(() {
+      failedChange = true;
+    });
 
   }
 
@@ -297,7 +312,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
-                  const Gap(230),
+                  const Gap(10),
+                  if(failedChange)
+                  const Center(child: Text("Erro ao salvar informações!", style: TextStyle(color: Colors.red, fontSize: 18))),
+                  if(sucessfullChange)
+                    const Center(child: Text("Informações atualizadas com sucesso!", style: TextStyle(fontSize: 18))),
+                  const Gap(30),
                   if (showSaveButton)
                     Center(
                       child: FilledButton(

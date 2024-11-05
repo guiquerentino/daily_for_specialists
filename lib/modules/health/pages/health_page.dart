@@ -109,8 +109,7 @@ class _HealthPageState extends State<HealthPage> {
             children: [
               GestureDetector(
                 onTap: () {
-                  // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 1;
-                  // Modular.to.navigate('/meditation');
+                  Modular.to.navigate(RouteConstants.chatPage);
                 },
                 child: Container(
                   height: 100,
@@ -130,8 +129,7 @@ class _HealthPageState extends State<HealthPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 1;
-                  // Modular.to.navigate('/goals');
+                  Modular.to.navigate(RouteConstants.goalsPage);
                 },
                 child: Container(
                   height: 100,
@@ -151,8 +149,7 @@ class _HealthPageState extends State<HealthPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 1;
-                  // Modular.to.navigate('/articles');
+                   Modular.to.navigate(RouteConstants.registersPage);
                 },
                 child: Container(
                   height: 100,
@@ -166,213 +163,6 @@ class _HealthPageState extends State<HealthPage> {
                       Image.asset('assets/article_illustration4.png',
                           height: 70, width: 70),
                       const Text("Registros")
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 1;
-                  // Modular.to.navigate('/annotations');
-                },
-                child: Container(
-                  height: 100,
-                  width: 110,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: [
-                      Image.asset('assets/article_illustration5.png',
-                          height: 70, width: 70),
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      int currentIndex = 0;
-                      List<Map<String, String>> affirmations = [
-                        {
-                          "quote":
-                              "Você é mais forte do que imagina e mais capaz do que acredita. A felicidade é um estado de espírito, e você tem o poder de escolhê-la todos os dias.",
-                          "author": "Maya Angelou"
-                        },
-                        {
-                          "quote":
-                              "O amor próprio é a chave para a verdadeira felicidade. Abrace quem você é e encontre alegria em cada momento.",
-                          "author": "Eckhart Tolle"
-                        },
-                        {
-                          "quote":
-                              "A felicidade não é algo pronto. Ela vem de suas próprias ações e pensamentos. Cultive o amor próprio e veja a transformação em sua vida.",
-                          "author": "Dalai Lama"
-                        },
-                        {
-                          "quote":
-                              "Acredite em si mesmo e em tudo o que você é. Saiba que dentro de você há algo maior do que qualquer obstáculo.",
-                          "author": "Ralph Waldo Emerson"
-                        },
-                        {
-                          "quote":
-                              "O sucesso não é a chave para a felicidade. A felicidade é a chave para o sucesso. Se você ama o que está fazendo, você terá sucesso.",
-                          "author": "Albert Schweitzer"
-                        },
-                        {
-                          "quote":
-                              "Você não precisa ser perfeito para ser maravilhoso. Ame a si mesmo por quem você é e celebre suas conquistas.",
-                          "author": "Brené Brown"
-                        },
-                        {
-                          "quote":
-                              "Cada dia é uma nova oportunidade para se amar mais e ser feliz. Abrace o presente e construa um futuro de alegria.",
-                          "author": "Oprah Winfrey"
-                        },
-                        {
-                          "quote":
-                              "A verdadeira felicidade é encontrada ao viver uma vida autêntica e ao se amar incondicionalmente.",
-                          "author": "Deepak Chopra"
-                        },
-                        {
-                          "quote":
-                              "Confie em si mesmo e você estará no caminho certo para alcançar a verdadeira felicidade e realização.",
-                          "author": "Adiburai Naxumerus"
-                        },
-                        {
-                          "quote":
-                              "A jornada para o amor próprio e a felicidade é contínua. Cada passo que você dá é um avanço em direção à sua melhor versão.",
-                          "author": "Don Miguel Ruiz"
-                        },
-                      ];
-
-                      return StatefulBuilder(
-                        builder: (context, setState) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: FractionallySizedBox(
-                              widthFactor: 0.8,
-                              heightFactor: 0.5,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child:
-                                            const Icon(Icons.close, size: 32)),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 20.0, left: 16, right: 16),
-                                    child: Center(
-                                      child: RichText(
-                                        text: TextSpan(
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontFamily: 'Pangram',
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                                text:
-                                                    '${affirmations[currentIndex]["quote"]}\n\n'),
-                                            TextSpan(
-                                              text:
-                                                  '${affirmations[currentIndex]["author"]}',
-                                              style: const TextStyle(
-                                                fontStyle: FontStyle.italic,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: currentIndex > 0
-                                              ? () {
-                                                  setState(() {
-                                                    currentIndex--;
-                                                  });
-                                                }
-                                              : null,
-                                          child: const Text("Anterior"),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: currentIndex <
-                                                  affirmations.length - 1
-                                              ? () {
-                                                  setState(() {
-                                                    currentIndex++;
-                                                  });
-                                                }
-                                              : null,
-                                          child: const Text("Próximo"),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  height: 100,
-                  width: 110,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: [
-                      Image.asset('assets/article_illustration.png',
-                          height: 70, width: 70),
-                      const Text("Consultas")
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Provider.of<BottomNavigationBarProvider>(context, listen: false).selectedIndex = 1;
-                  // Modular.to.navigate('/tests');
-                },
-                child: Container(
-                  height: 100,
-                  width: 110,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: [
-                      Image.asset('assets/article_illustration6.png',
-                          height: 70, width: 70),
                     ],
                   ),
                 ),

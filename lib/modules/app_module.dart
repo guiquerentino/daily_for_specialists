@@ -1,11 +1,14 @@
 import 'package:daily_for_specialists/domain/repositories/repository_module.dart';
 import 'package:daily_for_specialists/domain/services/service_module.dart';
+import 'package:daily_for_specialists/modules/articles/articles_module.dart';
 import 'package:daily_for_specialists/modules/auth/auth_module.dart';
 import 'package:daily_for_specialists/modules/chat/chat_module.dart';
+import 'package:daily_for_specialists/modules/goals/goals_module.dart';
 import 'package:daily_for_specialists/modules/health/health_module.dart';
 import 'package:daily_for_specialists/modules/home/home_module.dart';
 import 'package:daily_for_specialists/modules/onboarding/onboarding_module.dart';
 import 'package:daily_for_specialists/modules/profile/profile_module.dart';
+import 'package:daily_for_specialists/modules/registers/registers_module.dart';
 import 'package:daily_for_specialists/modules/settings/settings_module.dart';
 import 'package:daily_for_specialists/modules/splash/splash_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -32,6 +35,9 @@ class AppModule extends Module {
     r.module('/chat', module: ChatModule());
     r.module('/profile', module: ProfileModule());
     r.module('/settings', module: SettingsModule());
+    r.module('/articles', module: ArticlesModule());
+    r.module('/registers', module: RegistersModule());
+    r.module('/goals', module: GoalsModule());
   }
 
 }

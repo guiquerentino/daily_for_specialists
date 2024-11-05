@@ -105,7 +105,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               if (value == null || value == '') {
                                 return 'Por favor, digite uma senha válida.';
                               }
-                              return null;
                             },
                             decoration: InputDecoration(
                                 hintText: "Senha nova",
@@ -134,6 +133,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               if (value == null || value == '') {
                                 return 'Por favor, digite uma senha válida.';
                               }
+
+                              if(value != _passwordController.text){
+                                return 'As senhas não coincidem.';
+                              }
+
                               return null;
                             },
                             decoration: InputDecoration(
