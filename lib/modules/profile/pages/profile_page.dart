@@ -56,6 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             child: const Icon(Icons.arrow_back),
           )),
+
       body: Column(
         children: [
           Container(
@@ -65,10 +66,10 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 22.0, bottom: 20),
+                  padding: const EdgeInsets.only(left: 5.0, bottom: 20),
                   child: Container(
-                    width: 90,
-                    height: 90,
+                    width: 75,
+                    height: 75,
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: DailyColors.primaryColor),
@@ -96,13 +97,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                             Text(_truncateName(widget.patient.name),
                                 style: const TextStyle(
-                                    fontSize: 26, fontWeight: FontWeight.bold)),
+                                    fontSize: 22, fontWeight: FontWeight.bold)),
                             PopupMenuButton<String>(
                               onSelected: (value) async {
                                 if(value == 'edit'){
-
-                                  print(widget.patient.id);
-
                                   final response = await http.patch(
                                     Uri.parse('http://10.0.2.2:8080/api/v1/patients?id=${widget.patient.id}'),
                                     headers: {

@@ -65,6 +65,11 @@ class _DailyEmotionRegistersState extends State<DailyEmotionRegisters> {
   }
 
 
+  String _decodeUtf8(String text) {
+    return utf8.decode(text.codeUnits);
+  }
+
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -178,6 +183,7 @@ class _DailyEmotionRegistersState extends State<DailyEmotionRegisters> {
                                       },
                                       itemBuilder: (BuildContext context) {
                                         return [
+                                          if (emotion.comment == null || emotion.comment!.isEmpty)
                                           const PopupMenuItem<String>(
                                             value: 'add_comment',
                                             child: Text('Adicionar comentário'),
@@ -218,7 +224,7 @@ class _DailyEmotionRegistersState extends State<DailyEmotionRegisters> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: emotion.tags!.map((tag) => tag.text).join(', '),
+                                                  text: emotion.tags!.map((tag) => _decodeUtf8(tag.text)).join(', '),
                                                 ),
                                               ],
                                             ),
@@ -240,7 +246,7 @@ class _DailyEmotionRegistersState extends State<DailyEmotionRegisters> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: emotion.text,
+                                                  text: _decodeUtf8(emotion.text!),
                                                 ),
                                               ],
                                             ),
@@ -323,8 +329,11 @@ class _DailyEmotionRegistersState extends State<DailyEmotionRegisters> {
               child: Text('Ok'),
               onPressed: () async {
                 String comment = commentController.text;
-                emotion.comment = comment;
+                emotion.comment = _decodeUtf8(comment);
 
+                if(emotion.text != null){
+                  emotion.text = _decodeUtf8(emotion.text!);
+                }
                 final url = Uri.parse('http://10.0.2.2:8080/api/v1/emotions');
                 final response = await http.put(
                   url,
